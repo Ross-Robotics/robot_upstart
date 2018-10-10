@@ -67,7 +67,8 @@ def get_argument_parser():
                    help="Create symbolic link to job launch files instead of copying them.")
     p.add_argument("--wait", action='store_true',
                    help="Pass a wait flag to roslaunch.")
-
+    p.add_argument("--interface_loop", action='store_true',
+                   help="Wait in an endless loop for getifip to return a valid IP address.")
     return p
 
 
@@ -110,6 +111,8 @@ def main():
         j.generate_system_files = False
     if args.wait:
         j.roslaunch_wait = True
+    if args.interface_loop:
+        j.interface_loop = True
 
     provider = providers.detect_provider()
     if args.provider == 'upstart':
