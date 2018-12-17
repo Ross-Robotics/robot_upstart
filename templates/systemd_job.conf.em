@@ -33,6 +33,10 @@ After=network.target
 
 [Service]
 Type=simple
+@[if restart_on_failure]@
+Restart=on-failure
+RestartSec=3
+@[end if]@
 ExecStart=/usr/sbin/@(name)-start
 
 [Install]

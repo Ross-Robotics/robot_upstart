@@ -110,6 +110,9 @@ class Job(object):
         # parameter.
         self.interface_loop = False
 
+        # Override this to True if you want the job to be restarted if it fails
+        self.restart_on_failure = False
+
     def add(self, package=None, filename=None, glob=None):
         """ Add launch or other configuration files to Job.
 
