@@ -51,15 +51,16 @@ if [[ ! -d $log_path ]]; then
     log_path="/tmp"
   fi
 fi
-
 @[if interface]@
 export ROS_IP=`rosrun robot_upstart getifip @(interface)`
+export RR_IP=`rosrun robot_upstart getifip @(rr_interface)`
 @[if interface_loop]@
 while [ "$ROS_IP" == "" ]
 do
   sleep 1
   log err "Couldn't initialize network interface. Retrying."
   export ROS_IP=`rosrun robot_upstart getifip @(interface)`
+  export RR_IP=`rosrun robot_upstart getifip @(interface)`
 done
 @[else]@
 if [ "$ROS_IP" = "" ]; then
@@ -69,6 +70,13 @@ fi
 @[end if]@
 @[else]@
 export ROS_HOSTNAME=$(hostname)
+export RR_IP=`rosrun robot_upstart getifip @(rr_interface)`
+while [ "$RR_IP" == "" ]
+do
+  sleep 1
+  log err "Couldn't initialize network interface. Retrying."
+  export RR_IP=`rosrun robot_upstart getifip @(rr_interface)`
+done
 @[end if]@
 
 @[if master_uri]@
@@ -80,6 +88,7 @@ export ROS_HOME=${ROS_HOME:=$(echo ~@(user))/.ros}
 export ROS_LOG_DIR=$log_path
 
 log info "@(name): Launching ROS_HOSTNAME=$ROS_HOSTNAME, ROS_IP=$ROS_IP, ROS_MASTER_URI=$ROS_MASTER_URI, ROS_HOME=$ROS_HOME, ROS_LOG_DIR=$log_path"
+log info "@(name): RR_IP=$RR_IP"
 
 # If xacro files are present in job folder, generate and expand an amalgamated urdf.
 XACRO_FILENAME=$log_path/@(name).xacro

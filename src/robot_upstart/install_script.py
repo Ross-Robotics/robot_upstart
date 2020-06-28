@@ -49,6 +49,8 @@ def get_argument_parser():
                    help="Specify job name. If unspecified, will be constructed from package name.")
     p.add_argument("--interface", type=str, metavar="ethN",
                    help="Specify network interface name to associate job with.")
+    p.add_argument("--rr_interface", type=str, metavar="ethN",
+                   help="Specify network interface name to associate the rr stack with.")
     p.add_argument("--user", type=str, metavar="NAME",
                    help="Specify user to launch job as.")
     p.add_argument("--setup", type=str, metavar="path/to/setup.bash",
@@ -85,7 +87,7 @@ def main():
     # Any unspecified arguments are on the args object as None. These are filled
     # in by the Job constructor when passed as Nones.
     j = robot_upstart.Job(
-        name=job_name, interface=args.interface, user=args.user,
+        name=job_name, interface=args.interface,rr_interface=args.rr_interface, user=args.user,
         workspace_setup=args.setup, rosdistro=args.rosdistro,
         master_uri=args.master, log_path=args.logdir)
 

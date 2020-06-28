@@ -39,7 +39,7 @@ import providers
 class Job(object):
     """ Represents a ROS configuration to launch on machine startup. """
 
-    def __init__(self, name="ros", interface=None, user=None, workspace_setup=None,
+    def __init__(self, name="ros", interface=None, rr_interface=None, user=None, workspace_setup=None,
                  rosdistro=None, master_uri=None, log_path=None):
         """Construct a new Job definition.
 
@@ -72,6 +72,8 @@ class Job(object):
         self.name = name
 
         self.interface = interface
+
+        self.rr_interface = rr_interface
 
         # Fall back on current user as the user to run ROS as.
         self.user = user or getpass.getuser()
